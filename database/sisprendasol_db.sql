@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 21-09-2025 a las 14:44:14
+-- Tiempo de generación: 24-09-2025 a las 16:27:24
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.2.22
 
@@ -55,17 +55,24 @@ CREATE TABLE `clientes` (
   `grado_instruccion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `situacion_laboral` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `profesion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nom_conyugue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `paterno_conyugye` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nom_conyugue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `paterno_conyugye` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `materno_conyugye` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ci_conyugue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ci_exp_conyugue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nacionalidad_conyugye` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ocupacion_conyugue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ci_conyugue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ci_exp_conyugue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nacionalidad_conyugye` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ocupacion_conyugue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id`, `nombre`, `paterno`, `materno`, `ci`, `ci_exp`, `nacionalidad`, `sexo`, `fecha_nac`, `dir`, `fono`, `correo`, `nom_lugartrabajo`, `nro_nit`, `unipersonal`, `actividad`, `dir_lab`, `fono_lab`, `correo_lab`, `cargo_lab`, `tiempo_lab`, `fecha_ingreso_lab`, `estado_civil`, `vivienda`, `grado_instruccion`, `situacion_laboral`, `profesion`, `nom_conyugue`, `paterno_conyugye`, `materno_conyugye`, `ci_conyugue`, `ci_exp_conyugue`, `nacionalidad_conyugye`, `ocupacion_conyugue`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 'CARLOS', 'GONZALES', 'ORTIZ', '1111111', 'LP', 'BOLIVIANO', 'HOMBRE', '1999-01-01', 'LOS OLIVOS', '7777777', 'carlos@gmail.com', 'LUGAR TRABAJO', '1000000000', 'SI', 'ACTIVIDAD ECONOMICA', 'LOS PEDREGALES', '78787878', 'trabajo@gmail.com', 'CARGO', '2 años', '2023-01-01', 'SOLTERO', 'PROPIA', 'LICENCIATURA', 'SITUACION LABORAL', 'CONTADOR', '', '', '', NULL, '', '', '', '2025-09-24', '2025-09-24 16:25:37', '2025-09-24 16:25:37');
 
 -- --------------------------------------------------------
 
@@ -121,7 +128,11 @@ CREATE TABLE `historial_accions` (
 --
 
 INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `datos_original`, `datos_nuevo`, `modulo`, `fecha`, `hora`, `created_at`, `updated_at`) VALUES
-(1, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN USUARIO', '{\"ci\": \"111111\", \"id\": 2, \"dir\": \"LOS OLIVOS #32322\", \"fono\": \"7777777\", \"foto\": \"21758464631.jpg\", \"tipo\": \"EMPLEADO\", \"acceso\": \"1\", \"ci_exp\": \"LP\", \"correo\": \"juan@gmail.com\", \"nombre\": \"JUAN\", \"materno\": \"MAMANI\", \"paterno\": \"PERES\", \"usuario\": \"JPERES\", \"created_at\": \"2025-09-21T14:23:51.000000Z\", \"updated_at\": \"2025-09-21T14:23:51.000000Z\", \"fecha_registro\": \"2025-09-21\"}', NULL, 'USUARIOS', '2025-09-21', '10:23:51', '2025-09-21 14:23:51', '2025-09-21 14:23:51');
+(1, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN USUARIO', '{\"ci\": \"111111\", \"id\": 2, \"dir\": \"LOS OLIVOS #32322\", \"fono\": \"7777777\", \"foto\": \"21758464631.jpg\", \"tipo\": \"EMPLEADO\", \"acceso\": \"1\", \"ci_exp\": \"LP\", \"correo\": \"juan@gmail.com\", \"nombre\": \"JUAN\", \"materno\": \"MAMANI\", \"paterno\": \"PERES\", \"usuario\": \"JPERES\", \"created_at\": \"2025-09-21T14:23:51.000000Z\", \"updated_at\": \"2025-09-21T14:23:51.000000Z\", \"fecha_registro\": \"2025-09-21\"}', NULL, 'USUARIOS', '2025-09-21', '10:23:51', '2025-09-21 14:23:51', '2025-09-21 14:23:51'),
+(2, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CLIENTE', '{\"ci\": \"435345345\", \"id\": 2, \"dir\": \"LOS OLIVOS #2323\", \"fono\": \"7777777\", \"sexo\": \"HOMBRE\", \"ci_exp\": \"LP\", \"correo\": \"carlos@gmail.com\", \"nombre\": \"CARLOS\", \"dir_lab\": \"DIR LABORAL\", \"materno\": \"GONZALES\", \"nro_nit\": \"210000000\", \"paterno\": \"PRADERA\", \"fono_lab\": \"78787878\", \"vivienda\": \"PROPIA\", \"actividad\": \"ACTIVIDAD ECONOMICA\", \"cargo_lab\": \"CARGO TRABAJO\", \"fecha_nac\": \"2025-01-01\", \"profesion\": \"CONTADOR\", \"correo_lab\": \"trabajo@gmail.com\", \"created_at\": \"2025-09-24T16:18:24.000000Z\", \"tiempo_lab\": \"2 años\", \"updated_at\": \"2025-09-24T16:18:24.000000Z\", \"ci_conyugue\": \"89898989\", \"unipersonal\": \"SI\", \"estado_civil\": \"CASADO\", \"nacionalidad\": \"BOLIVIANO\", \"nom_conyugue\": \"MARIA\", \"fecha_registro\": \"2025-09-24\", \"ci_exp_conyugue\": \"LP\", \"materno_conyugye\": \"CHOQUE\", \"nom_lugartrabajo\": \"LUGAR TRABAJO\", \"paterno_conyugye\": \"MAMANI\", \"fecha_ingreso_lab\": \"2023-01-01\", \"grado_instruccion\": \"LICENCIATURA\", \"situacion_laboral\": \"SITUACION LABORAL\", \"ocupacion_conyugue\": \"OCUPACION CON\", \"nacionalidad_conyugye\": \"BOLIVIANA\"}', NULL, 'CLIENTES', '2025-09-24', '12:18:24', '2025-09-24 16:18:24', '2025-09-24 16:18:24'),
+(3, 1, 'MODIFICACIÓN', 'EL USUARIO admin ACTUALIZÓ UN CLIENTE', '{\"ci\": \"435345345\", \"id\": 2, \"dir\": \"LOS OLIVOS #2323\", \"fono\": \"7777777\", \"sexo\": \"HOMBRE\", \"ci_exp\": \"LP\", \"correo\": \"carlos@gmail.com\", \"nombre\": \"CARLOS\", \"dir_lab\": \"DIR LABORAL\", \"materno\": \"GONZALES\", \"nro_nit\": \"210000000\", \"paterno\": \"PRADERA\", \"fono_lab\": \"78787878\", \"vivienda\": \"PROPIA\", \"actividad\": \"ACTIVIDAD ECONOMICA\", \"cargo_lab\": \"CARGO TRABAJO\", \"fecha_nac\": \"2025-01-01\", \"profesion\": \"CONTADOR\", \"correo_lab\": \"trabajo@gmail.com\", \"created_at\": \"2025-09-24T16:18:24.000000Z\", \"tiempo_lab\": \"2 años\", \"updated_at\": \"2025-09-24T16:18:24.000000Z\", \"ci_conyugue\": \"89898989\", \"unipersonal\": \"SI\", \"estado_civil\": \"CASADO\", \"nacionalidad\": \"BOLIVIANO\", \"nom_conyugue\": \"MARIA\", \"fecha_registro\": \"2025-09-24\", \"ci_exp_conyugue\": \"LP\", \"materno_conyugye\": \"CHOQUE\", \"nom_lugartrabajo\": \"LUGAR TRABAJO\", \"paterno_conyugye\": \"MAMANI\", \"fecha_ingreso_lab\": \"2023-01-01\", \"grado_instruccion\": \"LICENCIATURA\", \"situacion_laboral\": \"SITUACION LABORAL\", \"ocupacion_conyugue\": \"OCUPACION CON\", \"nacionalidad_conyugye\": \"BOLIVIANA\"}', '{\"ci\": \"435345345\", \"id\": 2, \"dir\": \"LOS OLIVOS #2323\", \"fono\": \"7777777\", \"sexo\": \"HOMBRE\", \"ci_exp\": \"LP\", \"correo\": \"carlos@gmail.com\", \"nombre\": \"CARLOS\", \"dir_lab\": \"DIR LABORAL\", \"materno\": \"ORTIZ\", \"nro_nit\": \"210000000\", \"paterno\": \"PRADERA\", \"fono_lab\": \"78787878\", \"vivienda\": \"PROPIA\", \"actividad\": \"ACTIVIDAD ECONOMICA\", \"cargo_lab\": \"CARGO TRABAJO\", \"fecha_nac\": \"2025-01-01\", \"profesion\": \"CONTADOR\", \"correo_lab\": \"trabajo@gmail.com\", \"created_at\": \"2025-09-24T16:18:24.000000Z\", \"tiempo_lab\": \"2 años\", \"updated_at\": \"2025-09-24T16:19:26.000000Z\", \"ci_conyugue\": \"89898989\", \"unipersonal\": \"SI\", \"estado_civil\": \"CONCUBINATO\", \"nacionalidad\": \"BOLIVIANO\", \"nom_conyugue\": \"MARIA\", \"fecha_registro\": \"2025-09-24\", \"ci_exp_conyugue\": \"LP\", \"materno_conyugye\": \"CHOQUE\", \"nom_lugartrabajo\": \"LUGAR TRABAJO\", \"paterno_conyugye\": \"MAMANI\", \"fecha_ingreso_lab\": \"2023-01-01\", \"grado_instruccion\": \"LICENCIATURA\", \"situacion_laboral\": \"SITUACION LABORAL\", \"ocupacion_conyugue\": \"OCUPACION\", \"nacionalidad_conyugye\": \"BOLIVIANA\"}', 'CLIENTES', '2025-09-24', '12:19:26', '2025-09-24 16:19:26', '2025-09-24 16:19:26'),
+(4, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UN CLIENTE', '{\"ci\": \"435345345\", \"id\": 2, \"dir\": \"LOS OLIVOS #2323\", \"fono\": \"7777777\", \"sexo\": \"HOMBRE\", \"ci_exp\": \"LP\", \"correo\": \"carlos@gmail.com\", \"nombre\": \"CARLOS\", \"dir_lab\": \"DIR LABORAL\", \"materno\": \"ORTIZ\", \"nro_nit\": \"210000000\", \"paterno\": \"PRADERA\", \"fono_lab\": \"78787878\", \"vivienda\": \"PROPIA\", \"actividad\": \"ACTIVIDAD ECONOMICA\", \"cargo_lab\": \"CARGO TRABAJO\", \"fecha_nac\": \"2025-01-01\", \"profesion\": \"CONTADOR\", \"correo_lab\": \"trabajo@gmail.com\", \"created_at\": \"2025-09-24T16:18:24.000000Z\", \"tiempo_lab\": \"2 años\", \"updated_at\": \"2025-09-24T16:19:26.000000Z\", \"ci_conyugue\": \"89898989\", \"unipersonal\": \"SI\", \"estado_civil\": \"CONCUBINATO\", \"nacionalidad\": \"BOLIVIANO\", \"nom_conyugue\": \"MARIA\", \"fecha_registro\": \"2025-09-24\", \"ci_exp_conyugue\": \"LP\", \"materno_conyugye\": \"CHOQUE\", \"nom_lugartrabajo\": \"LUGAR TRABAJO\", \"paterno_conyugye\": \"MAMANI\", \"fecha_ingreso_lab\": \"2023-01-01\", \"grado_instruccion\": \"LICENCIATURA\", \"situacion_laboral\": \"SITUACION LABORAL\", \"ocupacion_conyugue\": \"OCUPACION\", \"nacionalidad_conyugye\": \"BOLIVIANA\"}', NULL, 'CLIENTES', '2025-09-24', '12:21:30', '2025-09-24 16:21:30', '2025-09-24 16:21:30'),
+(5, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CLIENTE', '{\"ci\": \"1111111\", \"id\": 1, \"dir\": \"LOS OLIVOS\", \"fono\": \"7777777\", \"sexo\": \"HOMBRE\", \"ci_exp\": \"LP\", \"correo\": \"carlos@gmail.com\", \"nombre\": \"CARLOS\", \"dir_lab\": \"LOS PEDREGALES\", \"materno\": \"ORTIZ\", \"nro_nit\": \"1000000000\", \"paterno\": \"GONZALES\", \"fono_lab\": \"78787878\", \"vivienda\": \"PROPIA\", \"actividad\": \"ACTIVIDAD ECONOMICA\", \"cargo_lab\": \"CARGO\", \"fecha_nac\": \"1999-01-01\", \"profesion\": \"CONTADOR\", \"correo_lab\": \"trabajo@gmail.com\", \"created_at\": \"2025-09-24T16:25:37.000000Z\", \"tiempo_lab\": \"2 años\", \"updated_at\": \"2025-09-24T16:25:37.000000Z\", \"ci_conyugue\": null, \"unipersonal\": \"SI\", \"estado_civil\": \"SOLTERO\", \"nacionalidad\": \"BOLIVIANO\", \"nom_conyugue\": \"\", \"fecha_registro\": \"2025-09-24\", \"ci_exp_conyugue\": \"\", \"materno_conyugye\": \"\", \"nom_lugartrabajo\": \"LUGAR TRABAJO\", \"paterno_conyugye\": \"\", \"fecha_ingreso_lab\": \"2023-01-01\", \"grado_instruccion\": \"LICENCIATURA\", \"situacion_laboral\": \"SITUACION LABORAL\", \"ocupacion_conyugue\": \"\", \"nacionalidad_conyugye\": \"\"}', NULL, 'CLIENTES', '2025-09-24', '12:25:37', '2025-09-24 16:25:37', '2025-09-24 16:25:37');
 
 -- --------------------------------------------------------
 
@@ -272,7 +283,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracions`
@@ -284,7 +295,7 @@ ALTER TABLE `configuracions`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
