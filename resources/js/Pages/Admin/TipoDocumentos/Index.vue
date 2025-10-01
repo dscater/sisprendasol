@@ -22,28 +22,16 @@ const { axiosDelete } = useAxios();
 
 const columns = [
     {
-        title: "CÓDIGO",
-        data: "codigo",
+        title: "",
+        data: "id",
     },
     {
-        title: "DESCRIPCIÓN DE TAREA",
+        title: "NOMBRE DEL DOCUMENTO",
+        data: "nombre",
+    },
+    {
+        title: "DESCRIPCIÓN",
         data: "descripcion",
-    },
-    {
-        title: "ÁREA DE PRODUCCIÓN",
-        data: "area.nombre",
-    },
-    {
-        title: "PRODUCTO",
-        data: "producto.nombre",
-    },
-    {
-        title: "SUPERVISOR",
-        data: "supervisor.full_name",
-    },
-    {
-        title: "ESTADO",
-        data: "estado",
     },
     {
         title: "FECHA DE REGISTRO",
@@ -64,11 +52,13 @@ const columns = [
 
             if (
                 props_page.auth?.user.permisos == "*" ||
-                props_page.auth?.user.permisos.includes("tipo_documentos.destroy")
+                props_page.auth?.user.permisos.includes(
+                    "tipo_documentos.destroy"
+                )
             ) {
                 buttons += ` <button class="mx-0 rounded-0 btn btn-danger eliminar"
                  data-id="${row.id}"
-                 data-nombre="${row.codigo}"
+                 data-nombre="${row.nombre}"
                  data-url="${route(
                      "tipo_documentos.destroy",
                      row.id
@@ -116,7 +106,9 @@ const accionesRow = () => {
         }).then(async (result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                let respuesta = await axiosDelete(route("tipo_documentos.destroy", id));
+                let respuesta = await axiosDelete(
+                    route("tipo_documentos.destroy", id)
+                );
                 if (respuesta && respuesta.sw) {
                     updateDatatable();
                 }
@@ -135,7 +127,11 @@ const updateDatatable = () => {
 };
 
 onMounted(async () => {
-    datatable = initDataTable("#table-tipo_documento", columns, route("tipo_documentos.api"));
+    datatable = initDataTable(
+        "#table-tipo_documento",
+        columns,
+        route("tipo_documentos.api")
+    );
     input_search = document.querySelector('input[type="search"]');
 
     // Agregar un evento 'keyup' al input de búsqueda con debounce
@@ -161,16 +157,16 @@ onBeforeUnmount(() => {
 });
 </script>
 <template>
-    <Head title="TipoDocumentos"></Head>
+    <Head title="Tipo de Documentos"></Head>
 
     <!-- BEGIN breadcrumb -->
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:;">Inicio</a></li>
-        <li class="breadcrumb-item active">TipoDocumentos</li>
+        <li class="breadcrumb-item active">Tipo de Documentos</li>
     </ol>
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
-    <h1 class="page-header">TipoDocumentos</h1>
+    <h1 class="page-header">Tipo de Documentos</h1>
     <!-- END page-header -->
 
     <div class="row">

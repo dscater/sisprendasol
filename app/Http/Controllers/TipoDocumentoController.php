@@ -107,7 +107,7 @@ class TipoDocumentoController extends Controller
      */
     public function show(TipoDocumento $tipo_documento): JsonResponse
     {
-        return response()->JSON($tipo_documento->load(["area", "producto", "supervisor", "tipo_documento_materials.material", "tipo_documento_operarios.user"]));
+        return response()->JSON($tipo_documento);
     }
 
     public function update(TipoDocumento $tipo_documento, TipoDocumentoUpdateRequest $request)

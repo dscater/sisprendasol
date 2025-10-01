@@ -19,7 +19,7 @@ const { oTipoDocumento, limpiarTipoDocumento } = useTipoDocumentos();
 const { axiosGet } = useAxios();
 const accion = ref(props.accion_dialog);
 const dialog = ref(props.open_dialog);
-let form = useForm(oTipoDocumento);
+let form = useForm(oTipoDocumento.value);
 watch(
     () => props.open_dialog,
     async (newValue) => {
@@ -28,7 +28,7 @@ watch(
             document
                 .getElementsByTagName("body")[0]
                 .classList.add("modal-open");
-            form = useForm(oTipoDocumento);
+            form = useForm(oTipoDocumento.value);
         }
     }
 );
@@ -43,8 +43,8 @@ const { flash, auth } = usePage().props;
 
 const tituloDialog = computed(() => {
     return accion.value == 0
-        ? `<i class="fa fa-plus"></i> Nueva TipoDocumento`
-        : `<i class="fa fa-edit"></i> Editar TipoDocumento`;
+        ? `<i class="fa fa-plus"></i> Nuevo Tipo de Documento`
+        : `<i class="fa fa-edit"></i> Editar Tipo de Documento`;
 });
 
 const enviarFormulario = () => {
@@ -116,7 +116,7 @@ onMounted(() => {});
     >
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header bg-orange text-white">
+                <div class="modal-header bg-primary text-white">
                     <h4 class="modal-title" v-html="tituloDialog"></h4>
                     <button
                         type="button"
@@ -128,7 +128,35 @@ onMounted(() => {});
                     <form @submit.prevent="enviarFormulario()">
                         <div class="row">
                             <div class="col-12">
-                                <label>Descripción de tipo_documento*</label>
+                                <small class="text-muted"
+                                    >Todos los campos con
+                                    <span class="text-danger">(*)</span> son
+                                    obligatorios</small
+                                >
+                            </div>
+                            <div class="col-md-6">
+                                <label class="required"
+                                    >Nombre del Documento</label
+                                >
+                                <el-input
+                                    type="text"
+                                    :class="{
+                                        'parsley-error': form.errors?.nombre,
+                                    }"
+                                    v-model="form.nombre"
+                                    autosize
+                                ></el-input>
+                                <ul
+                                    v-if="form.errors?.nombre"
+                                    class="parsley-errors-list filled"
+                                >
+                                    <li class="parsley-required">
+                                        {{ form.errors?.nombre }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Descripción</label>
                                 <el-input
                                     type="textipo_documento"
                                     :class="{

@@ -46,7 +46,7 @@ class Cliente extends Model
         "fecha_registro",
     ];
 
-    protected $appends = ['fecha_registro_t', 'fecha_nac_t', 'fecha_ingreso_lab_t', 'full_name','full_ci'];
+    protected $appends = ['fecha_registro_t', 'fecha_nac_t', 'fecha_ingreso_lab_t', 'full_name', 'full_ci'];
 
     public function getFUllCiAttribute()
     {
