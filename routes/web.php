@@ -5,14 +5,9 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\TipoDocumentoController;
-use App\Http\Controllers\MunicipioController;
-use App\Http\Controllers\PortalController;
-use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ReporteFinancieroController;
-use App\Http\Controllers\TareaController;
-use App\Http\Controllers\UrbanizacionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
@@ -104,6 +99,7 @@ Route::middleware(['auth', 'permisoUsuario'])->prefix("admin")->group(function (
     Route::get("reporte_financieros/api", [ReporteFinancieroController::class, 'api'])->name("reporte_financieros.api");
     Route::get("reporte_financieros/paginado", [ReporteFinancieroController::class, 'paginado'])->name("reporte_financieros.paginado");
     Route::get("reporte_financieros/listado", [ReporteFinancieroController::class, 'listado'])->name("reporte_financieros.listado");
+    Route::post("reporte_financieros/archivos", [ReporteFinancieroController::class, 'archivos'])->name("reporte_financieros.archivos");
     Route::resource("reporte_financieros", ReporteFinancieroController::class)->only(
         ["index", "store", "edit", "show", "update", "destroy"]
     );

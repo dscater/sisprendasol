@@ -48,6 +48,7 @@ class PermisoService
             "reporte_financieros.show",
             "reporte_financieros.update",
             "reporte_financieros.destroy",
+            "reporte_financieros.archivos",
 
             "configuracions.index",
             "configuracions.create",
