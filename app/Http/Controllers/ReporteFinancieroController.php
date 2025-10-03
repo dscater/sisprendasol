@@ -157,21 +157,96 @@ class ReporteFinancieroController extends Controller
         $archivo1 = $request->file('archivo1');
         $spreadsheet = IOFactory::load($archivo1->getPathname());
         $hoja = $spreadsheet->getActiveSheet();
-        $datos = $hoja->toArray();
+        $filas = $hoja->getRowIterator(6);
+        $total = 0; // contador total valores
+        $puntaje = 0;
 
-        foreach ($datos as $fila) {
-            // Procesa cada fila
+
+        foreach ($filas as $fila) {
+            $celdas = $fila->getCellIterator();
+            $celdas->setIterateOnlyExistingCells(false);
+
+            $colB = $hoja->getCell('B' . $fila->getRowIndex())->getValue(); // REQUISITOS
+
+            if ($colB) {
+                $colD = $hoja->getCell('D' . $fila->getRowIndex())->getValue(); // DEUDOR
+                $colF = $hoja->getCell('F' . $fila->getRowIndex())->getValue(); // CODEUDOR
+                $colH = $hoja->getCell('H' . $fila->getRowIndex())->getValue(); // GARANTE
+
+                if (trim($colD) != '') {
+                    $puntaje++;
+                } else {
+                    $puntaje--;
+                }
+
+                if (trim($colF) != '') {
+                    $puntaje++;
+                } else {
+                    $puntaje--;
+                }
+
+                if (trim($colH) != '') {
+                    $puntaje++;
+                } else {
+                    $puntaje--;
+                }
+
+                $total += 3;
+            }
         }
+
+        // Log::debug("TOTAL 1: " . $total);
+        // Log::debug("PUNTAJE 1: " . $puntaje);
 
         $archivo2 = $request->file('archivo2');
         $spreadsheet = IOFactory::load($archivo2->getPathname());
         $hoja = $spreadsheet->getActiveSheet();
-        $datos = $hoja->toArray();
+        $filas = $hoja->getRowIterator(8);
 
-        foreach ($datos as $fila) {
-            // Procesa cada fila
+        foreach ($filas as $fila) {
+            $celdas = $fila->getCellIterator();
+            $celdas->setIterateOnlyExistingCells(false);
+            $colB = $hoja->getCell('B' . $fila->getRowIndex())->getValue(); // TIPO DOCUMENTO/ATRIBUTO
+            if ($colB) {
+                //OFICIAL DE CRÉDITOS
+                $colD = $hoja->getCell('D' . $fila->getRowIndex())->getValue(); // SI
+                $colE = $hoja->getCell('E' . $fila->getRowIndex())->getValue(); // NO
+                $colF = $hoja->getCell('F' . $fila->getRowIndex())->getValue(); // N/A
+
+                //SUBGERENTE
+                $colH = $hoja->getCell('H' . $fila->getRowIndex())->getValue(); // SI
+                $colI = $hoja->getCell('I' . $fila->getRowIndex())->getValue(); // NO
+                $colJ = $hoja->getCell('J' . $fila->getRowIndex())->getValue(); // N/A
+
+                if (trim($colD) != '') {
+                    $puntaje++;
+                } elseif (trim($colE) != '') {
+                    $puntaje--;
+                } elseif (trim($colF) == '') {
+                    $puntaje--;
+                }
+
+                if (trim($colH) != '') {
+                    $puntaje++;
+                } elseif (trim($colI) != '') {
+                    $puntaje--;
+                } elseif (trim($colJ) == '') {
+                    $puntaje--;
+                }
+
+                $total += 2;
+            }
         }
 
-        return response()->json(['data' => $datos]);
+        // Log::debug("TOTAL 2: " . $total);
+        // Log::debug("PUNTAJE 2: " . $puntaje);
+
+        $porcentaje = 0;
+        if ($puntaje > 0) {
+            $porcentaje = ($puntaje * 100) / $total;
+            $porcentaje = round($porcentaje, 2);
+        }
+
+        return response()->json(['total' => $total, 'puntaje' => $puntaje, 'porcentaje' => $porcentaje]);
     }
 }

@@ -182,7 +182,7 @@ onMounted(() => {});
                                     obligatorios</small
                                 >
                             </div>
-                            <div class="col-md-6 mt-2">
+                            <div class="col-md-6 mt-3">
                                 <label class="required"
                                     >Seleccionar Tipo de Documento</label
                                 >
@@ -213,7 +213,7 @@ onMounted(() => {});
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-6 mt-2">
+                            <div class="col-md-6 mt-3">
                                 <label class="required"
                                     >Seleccionar Cliente</label
                                 >
@@ -244,8 +244,9 @@ onMounted(() => {});
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-6 mt-2">
-                                <label class="required">Cargar Archivo 1</label
+                            <div class="col-md-6 mt-3">
+                                <label class="required"
+                                    >Formulario de requisitos</label
                                 ><br />
                                 <input
                                     type="file"
@@ -254,8 +255,9 @@ onMounted(() => {});
                                     @change="cargarArchivo1"
                                 />
                             </div>
-                            <div class="col-md-6 mt-2">
-                                <label class="required">Cargar Archivo 2</label
+                            <div class="col-md-6 mt-3">
+                                <label class="required"
+                                    >Formulario de Créditos</label
                                 ><br />
                                 <input
                                     type="file"
