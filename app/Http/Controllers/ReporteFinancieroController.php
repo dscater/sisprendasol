@@ -173,25 +173,27 @@ class ReporteFinancieroController extends Controller
                 $colF = $hoja->getCell('F' . $fila->getRowIndex())->getValue(); // CODEUDOR
                 $colH = $hoja->getCell('H' . $fila->getRowIndex())->getValue(); // GARANTE
 
-                if (trim($colD) != '') {
-                    $puntaje++;
-                } else {
-                    $puntaje--;
-                }
+                if (trim($colD) != '' || trim($colF) != '' || trim($colH) != '') {
+                    // si todas las celdas no estan vacias
+                    if (trim($colD) != '') {
+                        $puntaje++;
+                    } else {
+                        $puntaje--;
+                    }
 
-                if (trim($colF) != '') {
-                    $puntaje++;
-                } else {
-                    $puntaje--;
-                }
+                    if (trim($colF) != '') {
+                        $puntaje++;
+                    } else {
+                        $puntaje--;
+                    }
 
-                if (trim($colH) != '') {
-                    $puntaje++;
-                } else {
-                    $puntaje--;
+                    if (trim($colH) != '') {
+                        $puntaje++;
+                    } else {
+                        $puntaje--;
+                    }
+                    $total += 3;
                 }
-
-                $total += 3;
             }
         }
 
@@ -202,7 +204,8 @@ class ReporteFinancieroController extends Controller
         $spreadsheet = IOFactory::load($archivo2->getPathname());
         $hoja = $spreadsheet->getActiveSheet();
         $filas = $hoja->getRowIterator(8);
-
+        $total2 = 0;
+        $puntaje2 = 0;
         foreach ($filas as $fila) {
             $celdas = $fila->getCellIterator();
             $celdas->setIterateOnlyExistingCells(false);
@@ -211,42 +214,49 @@ class ReporteFinancieroController extends Controller
                 //OFICIAL DE CRÉDITOS
                 $colD = $hoja->getCell('D' . $fila->getRowIndex())->getValue(); // SI
                 $colE = $hoja->getCell('E' . $fila->getRowIndex())->getValue(); // NO
-                $colF = $hoja->getCell('F' . $fila->getRowIndex())->getValue(); // N/A
 
                 //SUBGERENTE
                 $colH = $hoja->getCell('H' . $fila->getRowIndex())->getValue(); // SI
                 $colI = $hoja->getCell('I' . $fila->getRowIndex())->getValue(); // NO
-                $colJ = $hoja->getCell('J' . $fila->getRowIndex())->getValue(); // N/A
 
-                if (trim($colD) != '') {
-                    $puntaje++;
-                } elseif (trim($colE) != '') {
-                    $puntaje--;
-                } elseif (trim($colF) == '') {
-                    $puntaje--;
+
+                if (trim($colD) != '' || trim($colE)) {
+                    // si todas las celdas no estan vacias
+                    if (trim($colD) != '') {
+                        $puntaje2++;
+                        $total2++;
+                    } elseif (trim($colE) != '') {
+                        $puntaje2--;
+                        $total2++;
+                    }
                 }
 
-                if (trim($colH) != '') {
-                    $puntaje++;
-                } elseif (trim($colI) != '') {
-                    $puntaje--;
-                } elseif (trim($colJ) == '') {
-                    $puntaje--;
+                if (trim($colH) != '' || trim($colI) != '') {
+                    // si todas las celdas no estan vacias
+                    if (trim($colH) != '') {
+                        $puntaje2++;
+                        $total2++;
+                    } elseif (trim($colI) != '') {
+                        $puntaje2--;
+                        $total2++;
+                    }
                 }
-
-                $total += 2;
             }
         }
 
-        // Log::debug("TOTAL 2: " . $total);
-        // Log::debug("PUNTAJE 2: " . $puntaje);
+        // Log::debug("TOTAL 2: " . $total2);
+        // Log::debug("PUNTAJE 2: " . $puntaje2);
 
         $porcentaje = 0;
-        if ($puntaje > 0) {
-            $porcentaje = ($puntaje * 100) / $total;
+        $total_final = $total + $total2;
+        $puntaje_final = $puntaje + $puntaje2;
+        if ($puntaje_final > 0) {
+            $porcentaje = ($puntaje_final * 100) / $total_final;
             $porcentaje = round($porcentaje, 2);
         }
 
-        return response()->json(['total' => $total, 'puntaje' => $puntaje, 'porcentaje' => $porcentaje]);
+        sleep(3);
+
+        return response()->json(['total' => $total_final, 'puntaje' => $puntaje, 'porcentaje' => $porcentaje]);
     }
 }

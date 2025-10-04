@@ -22,11 +22,26 @@ class ReporteFinancieroStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "tipo_documento_id" => "required",
-            "cliente_id" => "required",
-            "doc1" => "required|file|mimes:xls,xlsx",
-            "doc2" => "required|file|mimes:xls,xlsx",
-            "res" => "required",
+            'tipo_documento_id' => "required",
+            'cliente_id' => "required",
+            'doc1' => "required|file|mimes:xls,xlsx",
+            'doc2' => "required|file|mimes:xls,xlsx",
+            'res' => "required",
+            'tipo' => "required",
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'tipo_documento_id.required' => "Debes seleccionar una opción",
+            'cliente_id.required' => "Debes seleccionar una opción",
+            'doc1.required' => "Debes cargar un archivo",
+            'doc1.mimes' => "Solo puedes cambiar archivos :mimes",
+            'doc2.required' => "Debes cargar un archivo",
+            'doc2.mimes' => "Solo puedes cambiar archivos :mimes",
+            'res.required' => "No se generó el resultado, intente nuevamente",
+            'tipo.required' => "No se generó el resultado, intente nuevamente",
         ];
     }
 }

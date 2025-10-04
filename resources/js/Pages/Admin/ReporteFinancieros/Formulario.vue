@@ -1,9 +1,9 @@
 <script setup>
 import { useForm, usePage } from "@inertiajs/vue3";
-import { useTipoDocumentos } from "@/composables/tipo_documentos/useTipoDocumentos";
 import { useAxios } from "@/composables/axios/useAxios";
 import { watch, ref, computed, defineEmits, onMounted, nextTick } from "vue";
 import axios from "axios";
+import { useReporteFinancieros } from "@/composables/reporte_financieros/useReporteFinancieros";
 const props = defineProps({
     open_dialog: {
         type: Boolean,
@@ -15,14 +15,16 @@ const props = defineProps({
     },
 });
 
-const { oTipoDocumento, limpiarTipoDocumento } = useTipoDocumentos();
+const { oReporteFinanciero, limpiarReporteFinanciero } =
+    useReporteFinancieros();
 const { axiosGet } = useAxios();
 const accion = ref(props.accion_dialog);
 const dialog = ref(props.open_dialog);
-let form = useForm(oTipoDocumento.value);
+let form = useForm(oReporteFinanciero.value);
 const listTipoDocumentos = ref([]);
 const listClientes = ref([]);
 const generado = ref(false);
+const obteniendoResultado = ref(false);
 watch(
     () => props.open_dialog,
     async (newValue) => {
@@ -31,7 +33,7 @@ watch(
             document
                 .getElementsByTagName("body")[0]
                 .classList.add("modal-open");
-            form = useForm(oTipoDocumento.value);
+            form = useForm(oReporteFinanciero.value);
             cargarListas();
         }
     }
@@ -54,8 +56,8 @@ const tituloDialog = computed(() => {
 const enviarFormulario = () => {
     let url =
         form["_method"] == "POST"
-            ? route("tipo_documentos.store")
-            : route("tipo_documentos.update", form.id);
+            ? route("reporte_financieros.store")
+            : route("reporte_financieros.update", form.id);
 
     form.post(url, {
         preserveScroll: true,
@@ -69,7 +71,7 @@ const enviarFormulario = () => {
                 confirmButtonColor: "#3085d6",
                 confirmButtonText: `Aceptar`,
             });
-            limpiarTipoDocumento();
+            limpiarReporteFinanciero();
             emits("envio-formulario");
         },
         onError: (err) => {
@@ -123,18 +125,57 @@ const cargarArchivo2 = (event) => {
 };
 
 const getResultado = () => {
-    const formData = new FormData();
-    formData.append("archivo1", archivo1.value);
-    formData.append("archivo2", archivo2.value);
-    axios
-        .post(route("reporte_financieros.archivos"), formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        })
-        .then((response) => {
-            console.log(response.data);
+    if (
+        archivo1.value &&
+        archivo2.value &&
+        archivo1.value.name &&
+        archivo2.value.name
+    ) {
+        obteniendoResultado.value = true;
+        const formData = new FormData();
+        formData.append("archivo1", archivo1.value);
+        formData.append("archivo2", archivo2.value);
+        axios
+            .post(route("reporte_financieros.archivos"), formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+            .then((response) => {
+                generado.value = true;
+                form.res = response.data.porcentaje;
+            })
+            .catch((err) => {
+                generado.value = false;
+                console.error(err);
+            })
+            .finally(() => {
+                obteniendoResultado.value = false;
+            });
+    } else {
+        Swal.fire({
+            icon: "info",
+            title: "Error",
+            text: `Debes cargar los dos archivos de Requisitos y Créditos`,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: `Aceptar`,
         });
+    }
+};
+
+const textoResultado = (porcentaje) => {
+    if (porcentaje >= 90) {
+        form.tipo = "BAJO";
+        return `Cliente con Bajo Riesgo de Pago de Crédito`;
+    } else if (porcentaje >= 70) {
+        form.tipo = "MEDIO";
+        return `Cliente con Riesgo Medio de Pago de Crédito`;
+    } else if (porcentaje >= 50) {
+        form.tipo = "ALTO";
+        return `Cliente con Alto Riesgo de Pago de Crédito`;
+    }
+    form.tipo = "NO APTO";
+    return `Cliente No Apto para Crédito`;
 };
 
 watch(dialog, (newVal) => {
@@ -244,9 +285,12 @@ onMounted(() => {});
                                     </li>
                                 </ul>
                             </div>
+                        </div>
+                        <div class="row" v-show="!obteniendoResultado">
                             <div class="col-md-6 mt-3">
-                                <label class="required"
-                                    >Formulario de requisitos</label
+                                <label class="required h5"
+                                    ><i class="fa fa-file-excel"></i> Formulario
+                                    de requisitos</label
                                 ><br />
                                 <input
                                     type="file"
@@ -254,10 +298,19 @@ onMounted(() => {});
                                     accept=".xls,.xlsx"
                                     @change="cargarArchivo1"
                                 />
+                                <ul
+                                    v-if="form.errors?.doc1"
+                                    class="parsley-errors-list filled"
+                                >
+                                    <li class="parsley-required">
+                                        {{ form.errors?.doc1 }}
+                                    </li>
+                                </ul>
                             </div>
                             <div class="col-md-6 mt-3">
-                                <label class="required"
-                                    >Formulario de Créditos</label
+                                <label class="required h5"
+                                    ><i class="fa fa-file-excel"></i> Formulario
+                                    de Créditos</label
                                 ><br />
                                 <input
                                     type="file"
@@ -265,13 +318,27 @@ onMounted(() => {});
                                     accept=".xls,.xlsx"
                                     @change="cargarArchivo2"
                                 />
+                                <ul
+                                    v-if="form.errors?.doc2"
+                                    class="parsley-errors-list filled"
+                                >
+                                    <li class="parsley-required">
+                                        {{ form.errors?.doc2 }}
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="col-12 mt-3 text-center">
+                            <div class="col-12 mt-3 text-center mb-2">
                                 <label class="h4">Resultado</label>
-                                <br /><span
-                                    class="text-md"
-                                    v-text="form.res ?? 'S/R'"
-                                ></span>
+                                <br />
+                                <div
+                                    class="text-md alert alert-info font-weight-bold"
+                                    v-if="form.res"
+                                >
+                                    {{ textoResultado(form.res) }}
+                                </div>
+                                <div v-else class="h5 alert alert-gray">
+                                    S/R
+                                </div>
                             </div>
                             <div class="col-12 text-center">
                                 <button
@@ -281,6 +348,113 @@ onMounted(() => {});
                                 >
                                     Generar <i class="fa fa-arrow-right"></i>
                                 </button>
+                            </div>
+                        </div>
+                        <div
+                            class="row contenedor_loading"
+                            v-show="obteniendoResultado"
+                        >
+                            <div class="h5 w-100 text-center text-white">
+                                OBTENIENDO EL RESULTADO...
+                            </div>
+                            <div class="loader">
+                                <div class="book-wrapper">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="white"
+                                        viewBox="0 0 126 75"
+                                        class="book"
+                                    >
+                                        <rect
+                                            stroke-width="5"
+                                            stroke="#e05452"
+                                            rx="7.5"
+                                            height="70"
+                                            width="121"
+                                            y="2.5"
+                                            x="2.5"
+                                        ></rect>
+                                        <line
+                                            stroke-width="5"
+                                            stroke="#e05452"
+                                            y2="75"
+                                            x2="63.5"
+                                            x1="63.5"
+                                        ></line>
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-width="4"
+                                            stroke="#c18949"
+                                            d="M25 20H50"
+                                        ></path>
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-width="4"
+                                            stroke="#c18949"
+                                            d="M101 20H76"
+                                        ></path>
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-width="4"
+                                            stroke="#c18949"
+                                            d="M16 30L50 30"
+                                        ></path>
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-width="4"
+                                            stroke="#c18949"
+                                            d="M110 30L76 30"
+                                        ></path>
+                                    </svg>
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="#ffffff74"
+                                        viewBox="0 0 65 75"
+                                        class="book-page"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-width="4"
+                                            stroke="#c18949"
+                                            d="M40 20H15"
+                                        ></path>
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-width="4"
+                                            stroke="#c18949"
+                                            d="M49 30L15 30"
+                                        ></path>
+                                        <path
+                                            stroke-width="5"
+                                            stroke="#e05452"
+                                            d="M2.5 2.5H55C59.1421 2.5 62.5 5.85786 62.5 10V65C62.5 69.1421 59.1421 72.5 55 72.5H2.5V2.5Z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="row"
+                            v-if="form.errors?.res || form.errors?.tipo"
+                        >
+                            <div class="col-12">
+                                <ul
+                                    v-if="form.errors?.res"
+                                    class="parsley-errors-list filled w-100 text-center"
+                                >
+                                    <li class="parsley-required">
+                                        {{ form.errors?.res }}
+                                    </li>
+                                </ul>
+                                <ul
+                                    v-if="form.errors?.tipo"
+                                    class="parsley-errors-list filled w-100 text-center"
+                                >
+                                    <li class="parsley-required">
+                                        {{ form.errors?.tipo }}
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </form>
@@ -306,3 +480,47 @@ onMounted(() => {});
         </div>
     </div>
 </template>
+<style scoped>
+.contenedor_loading {
+    margin: 20px 0px 5px 5px;
+    background-color: var(--principal_transparent);
+    padding: 20px 0px;
+}
+
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.book-wrapper {
+    width: 150px;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+}
+.book {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(10px 10px 5px rgba(0, 0, 0, 0.137));
+}
+.book-wrapper .book-page {
+    width: 50%;
+    height: auto;
+    position: absolute;
+    animation: paging 0.3s linear infinite;
+    transform-origin: left;
+}
+@keyframes paging {
+    0% {
+        transform: rotateY(0deg) skewY(0deg);
+    }
+    50% {
+        transform: rotateY(90deg) skewY(-20deg);
+    }
+    100% {
+        transform: rotateY(180deg) skewY(0deg);
+    }
+}
+</style>

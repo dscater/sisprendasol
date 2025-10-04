@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 01-10-2025 a las 22:05:53
+-- Tiempo de generación: 04-10-2025 a las 15:40:40
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.2.22
 
@@ -29,35 +29,35 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `clientes` (
   `id` bigint UNSIGNED NOT NULL,
-  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `paterno` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `materno` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ci` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ci_exp` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nacionalidad` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sexo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `paterno` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `materno` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ci` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ci_exp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nacionalidad` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sexo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha_nac` date NOT NULL,
-  `dir` varchar(800) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fono` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `correo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nom_lugartrabajo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nro_nit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `unipersonal` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `actividad` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dir_lab` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fono_lab` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `correo_lab` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cargo_lab` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tiempo_lab` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dir` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fono` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `correo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nom_lugartrabajo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nro_nit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unipersonal` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `actividad` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dir_lab` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fono_lab` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `correo_lab` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cargo_lab` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tiempo_lab` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha_ingreso_lab` date NOT NULL,
-  `estado_civil` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `vivienda` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `grado_instruccion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `situacion_laboral` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `profesion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estado_civil` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `vivienda` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `grado_instruccion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `situacion_laboral` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profesion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nom_conyugue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `paterno_conyugye` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `materno_conyugye` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `materno_conyugye` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ci_conyugue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ci_exp_conyugue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nacionalidad_conyugye` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -82,16 +82,16 @@ INSERT INTO `clientes` (`id`, `nombre`, `paterno`, `materno`, `ci`, `ci_exp`, `n
 
 CREATE TABLE `configuracions` (
   `id` bigint UNSIGNED NOT NULL,
-  `nombre_sistema` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `razon_social` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nit` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `dir` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fono` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `web` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `actividad` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `correo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `logo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nombre_sistema` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alias` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `razon_social` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dir` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fono` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `web` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `actividad` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `correo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -112,11 +112,11 @@ INSERT INTO `configuracions` (`id`, `nombre_sistema`, `alias`, `razon_social`, `
 CREATE TABLE `historial_accions` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
-  `accion` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descripcion` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `accion` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `datos_original` json DEFAULT NULL,
   `datos_nuevo` json DEFAULT NULL,
-  `modulo` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `modulo` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -137,7 +137,10 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (7, 1, 'MODIFICACIÓN', 'EL USUARIO admin ACTUALIZÓ UN TIPO DE DOCUMENTO', '{\"id\": 1, \"nombre\": \"TIPO DOC 1\", \"created_at\": \"2025-10-01T22:01:43.000000Z\", \"updated_at\": \"2025-10-01T22:01:43.000000Z\", \"descripcion\": \"DESC TIPO DOC 1\", \"fecha_registro\": \"2025-10-01\"}', '{\"id\": 1, \"nombre\": \"TIPO DOC 1 D\", \"created_at\": \"2025-10-01T22:01:43.000000Z\", \"updated_at\": \"2025-10-01T22:04:55.000000Z\", \"descripcion\": \"DESC TIPO DOC 1 MOD\", \"fecha_registro\": \"2025-10-01\"}', 'TIPO DE DOCUMENTOS', '2025-10-01', '18:04:55', '2025-10-01 22:04:55', '2025-10-01 22:04:55'),
 (8, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UN TIPO DE DOCUMENTO', '{\"id\": 1, \"nombre\": \"TIPO DOC 1 D\", \"created_at\": \"2025-10-01T22:01:43.000000Z\", \"updated_at\": \"2025-10-01T22:04:55.000000Z\", \"descripcion\": \"DESC TIPO DOC 1 MOD\", \"fecha_registro\": \"2025-10-01\"}', NULL, 'TIPO DE DOCUMENTOS', '2025-10-01', '18:05:12', '2025-10-01 22:05:12', '2025-10-01 22:05:12'),
 (9, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN TIPO DE DOCUMENTO', '{\"id\": 1, \"nombre\": \"TIPO DOCUMENTO 1\", \"created_at\": \"2025-10-01T22:05:31.000000Z\", \"updated_at\": \"2025-10-01T22:05:31.000000Z\", \"descripcion\": \"DESC. TIPO DOCUMENTO 1\", \"fecha_registro\": \"2025-10-01\"}', NULL, 'TIPO DE DOCUMENTOS', '2025-10-01', '18:05:31', '2025-10-01 22:05:31', '2025-10-01 22:05:31'),
-(10, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN TIPO DE DOCUMENTO', '{\"id\": 2, \"nombre\": \"TIPO DOCUMENTO 2\", \"created_at\": \"2025-10-01T22:05:40.000000Z\", \"updated_at\": \"2025-10-01T22:05:40.000000Z\", \"descripcion\": \"\", \"fecha_registro\": \"2025-10-01\"}', NULL, 'TIPO DE DOCUMENTOS', '2025-10-01', '18:05:40', '2025-10-01 22:05:40', '2025-10-01 22:05:40');
+(10, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN TIPO DE DOCUMENTO', '{\"id\": 2, \"nombre\": \"TIPO DOCUMENTO 2\", \"created_at\": \"2025-10-01T22:05:40.000000Z\", \"updated_at\": \"2025-10-01T22:05:40.000000Z\", \"descripcion\": \"\", \"fecha_registro\": \"2025-10-01\"}', NULL, 'TIPO DE DOCUMENTOS', '2025-10-01', '18:05:40', '2025-10-01 22:05:40', '2025-10-01 22:05:40'),
+(11, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN REPORTE FINANCIERO', '{\"id\": 5, \"res\": \"30.34\", \"doc1\": \"51759592126.xlsx\", \"doc2\": \"51759592126.xlsx\", \"tipo\": \"NO APTO\", \"cliente_id\": \"1\", \"created_at\": \"2025-10-04T15:35:26.000000Z\", \"updated_at\": \"2025-10-04T15:35:26.000000Z\", \"fecha_registro\": \"2025-10-04\", \"tipo_documento_id\": \"1\"}', NULL, 'REPORTE FINANCIERO', '2025-10-04', '11:35:26', '2025-10-04 15:35:26', '2025-10-04 15:35:26'),
+(12, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UN REPORTE FINANCIERO', '{\"id\": 5, \"res\": 30.34, \"doc1\": \"51759592126.xlsx\", \"doc2\": \"51759592126.xlsx\", \"tipo\": \"NO APTO\", \"cliente_id\": 1, \"created_at\": \"2025-10-04T15:35:26.000000Z\", \"updated_at\": \"2025-10-04T15:35:26.000000Z\", \"fecha_registro\": \"2025-10-04\", \"tipo_documento_id\": 1}', NULL, 'REPORTE FINANCIERO', '2025-10-04', '11:39:37', '2025-10-04 15:39:37', '2025-10-04 15:39:37'),
+(13, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN REPORTE FINANCIERO', '{\"id\": 6, \"res\": \"30.34\", \"doc1\": \"617595923921.xlsx\", \"doc2\": \"617595923922.xlsx\", \"tipo\": \"NO APTO\", \"cliente_id\": \"1\", \"created_at\": \"2025-10-04T15:39:52.000000Z\", \"updated_at\": \"2025-10-04T15:39:52.000000Z\", \"fecha_registro\": \"2025-10-04\", \"tipo_documento_id\": \"1\"}', NULL, 'REPORTE FINANCIERO', '2025-10-04', '11:39:52', '2025-10-04 15:39:52', '2025-10-04 15:39:52');
 
 -- --------------------------------------------------------
 
@@ -147,7 +150,7 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 
 CREATE TABLE `migrations` (
   `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -173,13 +176,21 @@ CREATE TABLE `reporte_financieros` (
   `id` bigint UNSIGNED NOT NULL,
   `tipo_documento_id` bigint UNSIGNED NOT NULL,
   `cliente_id` bigint UNSIGNED NOT NULL,
-  `doc1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `doc2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `doc1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `doc2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `res` double NOT NULL,
+  `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `reporte_financieros`
+--
+
+INSERT INTO `reporte_financieros` (`id`, `tipo_documento_id`, `cliente_id`, `doc1`, `doc2`, `res`, `tipo`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(6, 1, 1, '617595923921.xlsx', '617595923922.xlsx', 30.34, 'NO APTO', '2025-10-04', '2025-10-04 15:39:52', '2025-10-04 15:39:52');
 
 -- --------------------------------------------------------
 
@@ -189,8 +200,8 @@ CREATE TABLE `reporte_financieros` (
 
 CREATE TABLE `tipo_documentos` (
   `id` bigint UNSIGNED NOT NULL,
-  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descripcion` text COLLATE utf8mb4_unicode_ci,
+  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -212,19 +223,19 @@ INSERT INTO `tipo_documentos` (`id`, `nombre`, `descripcion`, `fecha_registro`, 
 
 CREATE TABLE `users` (
   `id` bigint UNSIGNED NOT NULL,
-  `usuario` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `paterno` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `materno` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ci` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ci_exp` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dir` varchar(600) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `correo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `fono` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `usuario` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `paterno` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `materno` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ci` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ci_exp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dir` varchar(600) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `correo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fono` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `acceso` int NOT NULL,
-  `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `foto` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tipo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `foto` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fecha_registro` date NOT NULL,
   `status` int NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -308,7 +319,7 @@ ALTER TABLE `configuracions`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -320,7 +331,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `reporte_financieros`
 --
 ALTER TABLE `reporte_financieros`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_documentos`

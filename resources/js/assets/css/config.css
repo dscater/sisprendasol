@@ -5,7 +5,7 @@
     --principal-portal: #007235;
     --principal-portal2: #465966;
     --principal-portal3: #007235;
-    --principal_transparent: #004a80bd;
+    --principal_transparent: #004b80ad;
     --principal_portal_transparent: #049bd1;
     --secundario: #ffe419;
     --secundario_hover: #e9cf0e;
@@ -50,6 +50,10 @@
 
 .text-md {
     font-size: 1.1rem;
+}
+
+form label {
+    font-weight: bold;
 }
 
 .txt_subasta_concluida {

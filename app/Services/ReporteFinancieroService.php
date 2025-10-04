@@ -9,16 +9,17 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\UploadedFile;
 
 class ReporteFinancieroService
 {
     private $modulo = "REPORTE FINANCIERO";
 
-    public function __construct(private HistorialAccionService $historialAccionService) {}
+    public function __construct(private HistorialAccionService $historialAccionService, private CargarArchivoService $cargarArchivoService) {}
 
     public function listado(): Collection
     {
-        $reporte_financieros = ReporteFinanciero::select("reporte_financieros.*");
+        $reporte_financieros = ReporteFinanciero::with(["tipo_documento", "cliente"])->select("reporte_financieros.*");
         $reporte_financieros = $reporte_financieros->get();
         return $reporte_financieros;
     }
@@ -43,10 +44,17 @@ class ReporteFinancieroService
     public function crear(array $datos): ReporteFinanciero
     {
         $reporte_financiero = ReporteFinanciero::create([
-            "nombre" => mb_strtoupper($datos["nombre"]),
-            "descripcion" => mb_strtoupper($datos["descripcion"]),
+            "tipo_documento_id" => $datos["tipo_documento_id"],
+            "cliente_id" => $datos["cliente_id"],
+            "res" => $datos["res"],
+            "tipo" => $datos["tipo"],
             "fecha_registro" => date("Y-m-d")
         ]);
+
+        // registrar archivos
+        $this->cargarArchivo($reporte_financiero, $datos["doc1"], "doc1", '1');
+        $this->cargarArchivo($reporte_financiero, $datos["doc2"], "doc2", '2');
+
         // registrar accion
         $this->historialAccionService->registrarAccion($this->modulo, "CREACIÓN", "REGISTRO UN REPORTE FINANCIERO", $reporte_financiero, null);
 
@@ -64,9 +72,21 @@ class ReporteFinancieroService
     {
         $old_reporte_financiero = clone $reporte_financiero;
         $reporte_financiero->update([
-            "nombre" => mb_strtoupper($datos["nombre"]),
-            "descripcion" => mb_strtoupper($datos["descripcion"]),
+            "tipo_documento_id" => $datos["tipo_documento_id"],
+            "cliente_id" => $datos["cliente_id"],
+            "res" => $datos["res"],
+            "tipo" => $datos["tipo"],
         ]);
+
+        // registrar archivos
+        if ($datos["doc1"] && !is_string($datos["doc1"])) {
+            $this->cargarArchivo($reporte_financiero, $datos["doc1"], "doc1", '1');
+        }
+
+        if ($datos["doc2"] && !is_string($datos["doc2"])) {
+            $this->cargarArchivo($reporte_financiero, $datos["doc2"], "doc2", '2');
+        }
+
         // registrar accion
         $this->historialAccionService->registrarAccion($this->modulo, "MODIFICACIÓN", "ACTUALIZÓ UN REPORTE FINANCIERO", $old_reporte_financiero, $reporte_financiero);
 
@@ -81,19 +101,38 @@ class ReporteFinancieroService
      */
     public function eliminar(ReporteFinanciero $reporte_financiero): bool
     {
-        // verificar usos
-        $usos = ReporteFinanciero::where("reporte_financiero_id", $reporte_financiero->id)->get();
-        if (count($usos) > 0) {
-            throw ValidationException::withMessages([
-                'error' =>  "No es posible eliminar este registro porque esta siendo utilizado por otros registros",
-            ]);
-        }
         $old_reporte_financiero = clone $reporte_financiero;
+
+        if ($reporte_financiero["doc1"]) {
+            \File::delete(public_path("files/reporte_financieros/" . $reporte_financiero["doc1"]));
+        }
+
+        if ($reporte_financiero["doc2"]) {
+            \File::delete(public_path("files/reporte_financieros/" . $reporte_financiero["doc2"]));
+        }
+
         $reporte_financiero->delete();
 
         // registrar accion
         $this->historialAccionService->registrarAccion($this->modulo, "ELIMINACIÓN", "ELIMINÓ UN REPORTE FINANCIERO", $old_reporte_financiero);
 
         return true;
+    }
+
+    /**
+     * Cargar archivo
+     *
+     * @param ReporteFinanciero $reporte_financiero
+     * @param UploadedFile $archivo
+     * @return void
+     */
+    public function cargarArchivo(ReporteFinanciero $reporte_financiero, UploadedFile $archivo, string $col = "archivo", string $index = ''): void
+    {
+        if ($reporte_financiero[$col]) {
+            \File::delete(public_path("files/reporte_financieros/" . $reporte_financiero[$col]));
+        }
+        $nombre = $reporte_financiero->id . time() . $index ?? '';
+        $reporte_financiero[$col] = $this->cargarArchivoService->cargarArchivo($archivo, public_path("files/reporte_financieros"), $nombre);
+        $reporte_financiero->save();
     }
 }

@@ -28,7 +28,7 @@ const columns = [
     },
     {
         title: "TIPO DE DOCUMENTO",
-        data: "reporte_financiero.nombre",
+        data: "tipo_documento.nombre",
     },
     {
         title: "CLIENTE",
@@ -36,7 +36,7 @@ const columns = [
     },
     {
         title: "RESULTADO",
-        data: "res",
+        data: "tipo",
     },
     {
         title: "FECHA DE REGISTRO",
@@ -65,7 +65,9 @@ const columns = [
             ) {
                 buttons += ` <button class="mx-0 rounded-0 btn btn-danger eliminar"
                  data-id="${row.id}"
-                 data-nombre="${row.nombre}"
+                 data-nombre="${row.tipo_documento.nombre} | ${
+                    row.cliente.full_name
+                }"
                  data-url="${route(
                      "reporte_financieros.destroy",
                      row.id
@@ -213,6 +215,8 @@ onBeforeUnmount(() => {
                         <thead>
                             <tr>
                                 <th width="5%"></th>
+                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th width="5%"></th>

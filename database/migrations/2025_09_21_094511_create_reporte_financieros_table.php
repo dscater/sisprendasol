@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("doc1", 255)->nullable();
             $table->string("doc2", 255)->nullable();
             $table->double("res", 6, 2);
+            $table->string("tipo", 255);
             $table->date("fecha_registro");
             $table->timestamps();
 

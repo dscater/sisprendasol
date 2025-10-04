@@ -15,6 +15,7 @@ class ReporteFinanciero extends Model
         "doc1",
         "doc2",
         "res",
+        "tipo", //BAJO, MEDIO, ALTO, NO APTO
         "fecha_registro",
     ];
 

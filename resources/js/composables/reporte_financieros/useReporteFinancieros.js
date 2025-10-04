@@ -7,6 +7,7 @@ const oReporteFinanciero = ref({
     doc1: "",
     doc2: "",
     res: "",
+    tipo: "",
     _method: "POST",
 });
 
@@ -19,6 +20,7 @@ export const useReporteFinancieros = () => {
             oReporteFinanciero.value.doc1 = "";
             oReporteFinanciero.value.doc2 = "";
             oReporteFinanciero.value.res = item.res;
+            oReporteFinanciero.value.tipo = item.tipo;
             oReporteFinanciero.value._method = "PUT";
             return oReporteFinanciero;
         }
@@ -32,6 +34,7 @@ export const useReporteFinancieros = () => {
         oReporteFinanciero.value.doc1 = "";
         oReporteFinanciero.value.doc2 = "";
         oReporteFinanciero.value.res = "";
+        oReporteFinanciero.value.tipo = "";
         oReporteFinanciero.value._method = "POST";
     };
 
