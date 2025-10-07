@@ -46,14 +46,25 @@ class Cliente extends Model
         "fecha_registro",
     ];
 
-    protected $appends = ['fecha_registro_t', 'fecha_nac_t', 'fecha_ingreso_lab_t', 'full_name', 'full_ci'];
+    protected $appends = ['fecha_registro_t', 'fecha_nac_t', 'fecha_ingreso_lab_t', 'full_name', 'full_ci', 'full_name_conyuge', 'full_ci_conyuge'];
+
+
+    public function getFullNameConyugeAttribute()
+    {
+        return $this->nom_conyugue . ' ' . $this->paterno_conyugye . ' ' . $this->materno_conyugye;
+    }
+
+    public function getFullCiConyugeAttribute()
+    {
+        return $this->ci_conyugue . ' ' . $this->ci_exp_conyugue;
+    }
 
     public function getFUllCiAttribute()
     {
         return $this->ci . ' ' . $this->ci_exp;
     }
 
-    public function getFUllNameAttribute()
+    public function getFullNameAttribute()
     {
         return $this->nombre . ' ' . $this->paterno . ' ' . $this->materno;
     }

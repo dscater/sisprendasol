@@ -337,7 +337,7 @@ onMounted(() => {});
                                     {{ textoResultado(form.res) }}
                                 </div>
                                 <div v-else class="h5 alert alert-gray">
-                                    S/R
+                                    Carga los archivos para generar el resultado
                                 </div>
                             </div>
                             <div class="col-12 text-center">

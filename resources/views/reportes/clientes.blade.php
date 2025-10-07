@@ -3,17 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Tareas</title>
+    <title>Usuarios</title>
     <style type="text/css">
         * {
             font-family: sans-serif;
         }
 
         @page {
-            margin-top: 1cm;
-            margin-bottom: 1cm;
-            margin-left: 1.5cm;
-            margin-right: 1cm;
+            margin-top: 1.5cm;
+            margin-bottom: 0.3cm;
+            margin-left: 0cm;
+            margin-right: 0cm;
         }
 
         table {
@@ -37,6 +37,7 @@
         table tbody tr td {
             font-size: 6pt;
         }
+
 
         .encabezado {
             width: 100%;
@@ -147,9 +148,6 @@
 
 <body>
     @inject('configuracion', 'App\Models\Configuracion')
-    @php
-        $cont = 0;
-    @endphp
     <div class="encabezado">
         <div class="logo">
             <img src="{{ $configuracion->first()->logo_b64 }}">
@@ -157,34 +155,76 @@
         <h2 class="titulo">
             {{ $configuracion->first()->nombre_sistema }}
         </h2>
-        <h4 class="texto">LISTA DE TAREAS</h4>
+        <h4 class="texto">LISTA DE USUARIOS</h4>
         <h4 class="fecha">Expedido: {{ date('d-m-Y') }}</h4>
     </div>
     <table border="1">
         <thead class="bg-principal">
             <tr>
-                <th width="10%">CÓDIGO</th>
-                <th>DESCRIPCIÓN DE TAREA</th>
-                <th>ÁREA DE PRODUCCIÓN</th>
-                <th>PRODUCTO</th>
-                <th>SUPERSIVOR</th>
-                <th>ESTADO</th>
-                <th width="9%">FECHA DE REGISTRO</th>
+                <th>Nombre Cliente</th>
+                <th>C.I.</th>
+                <th>Nacionalidad</th>
+                <th>Sexo</th>
+                <th>Fecha Nacimiento</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Nombre Lugar Trabajo</th>
+                <th>Número identificación Tributaria</th>
+                <th>Empresa Unipersonal</th>
+                <th>Actividad Económica</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Cargo</th>
+                <th>Tiempo Servicio</th>
+                <th>Fecha Ingreso</th>
+                <th>Estado Civil</th>
+                <th>Vivienda</th>
+                <th>Grado Instrucción</th>
+                <th>Situación Laboral</th>
+                <th>Profesión</th>
+                <th>Nombre Cónyugue</th>
+                <th>C.I.</th>
+                <th>Nacionalidad</th>
+                <th>Ocupación</th>
+                <th>FECHA DE REGISTRO</th>
             </tr>
         </thead>
         <tbody>
             @php
                 $cont = 1;
             @endphp
-            @foreach ($tareas as $tarea)
+            @foreach ($clientes as $cliente)
                 <tr>
-                    <td class="">{{ $tarea->codigo }}</td>
-                    <td class="">{{ $tarea->descripcion }}</td>
-                    <td class="">{{ $tarea->area->nombre }}</td>
-                    <td class="">{{ $tarea->producto->nombre }}</td>
-                    <td class="">{{ $tarea->supervisor->full_name }}</td>
-                    <td class="">{{ $tarea->estado }}</td>
-                    <td class="centreado">{{ $tarea->fecha_registro_t }}</td>
+                    <td>{{ $cliente->full_name }}</td>
+                    <td>{{ $cliente->full_ci }}</td>
+                    <td>{{ $cliente->nacionalidad }}</td>
+                    <td>{{ $cliente->sexo }}</td>
+                    <td>{{ $cliente->fecha_nac_t }}</td>
+                    <td>{{ $cliente->dir }}</td>
+                    <td>{{ $cliente->fono }}</td>
+                    <td>{{ $cliente->correo }}</td>
+                    <td>{{ $cliente->nom_lugartrabajo }}</td>
+                    <td>{{ $cliente->nro_nit }}</td>
+                    <td>{{ $cliente->unipersonal }}</td>
+                    <td>{{ $cliente->actividad }}</td>
+                    <td>{{ $cliente->dir_lab }}</td>
+                    <td>{{ $cliente->fono_lab }}</td>
+                    <td>{{ $cliente->correo_lab }}</td>
+                    <td>{{ $cliente->cargo_lab }}</td>
+                    <td>{{ $cliente->tiempo_lab }}</td>
+                    <td>{{ $cliente->fecha_ingreso_lab_t }}</td>
+                    <td>{{ $cliente->estado_civil }}</td>
+                    <td>{{ $cliente->vivienda }}</td>
+                    <td>{{ $cliente->grado_instruccion }}</td>
+                    <td>{{ $cliente->situacion_laboral }}</td>
+                    <td>{{ $cliente->profesion }}</td>
+                    <td>{{ $cliente->full_name_conyuge }}</td>
+                    <td>{{ $cliente->full_ci_conyuge }}</td>
+                    <td>{{ $cliente->nacionalidad_conyugye }}</td>
+                    <td>{{ $cliente->ocupacion_conyugue }}</td>
+                    <td class="centreado">{{ $cliente->fecha_registro_t }}</td>
                 </tr>
             @endforeach
         </tbody>

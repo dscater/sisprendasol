@@ -525,8 +525,12 @@ const logout = () => {
                     v-if="
                         user_logeado.permisos == '*' ||
                         user_logeado.permisos.includes('usuarios.index') ||
-                        user_logeado.permisos.includes('tipo_documentos.index') ||
-                        user_logeado.permisos.includes('reporte_financieros.index') ||
+                        user_logeado.permisos.includes(
+                            'tipo_documentos.index'
+                        ) ||
+                        user_logeado.permisos.includes(
+                            'reporte_financieros.index'
+                        ) ||
                         user_logeado.permisos.includes('clientes.index')
                     "
                 >
@@ -552,14 +556,21 @@ const logout = () => {
                 <div
                     v-if="
                         user_logeado.permisos == '*' ||
-                        user_logeado.permisos.includes('reporte_financieros.index')
+                        user_logeado.permisos.includes(
+                            'reporte_financieros.index'
+                        )
                     "
                     class="menu-item"
                     :class="[
-                        route_current == 'reporte_financieros.index' ? 'active' : 'none',
+                        route_current == 'reporte_financieros.index'
+                            ? 'active'
+                            : 'none',
                     ]"
                 >
-                    <Link :href="route('reporte_financieros.index')" class="menu-link">
+                    <Link
+                        :href="route('reporte_financieros.index')"
+                        class="menu-link"
+                    >
                         <div class="menu-icon">
                             <i class="fa fa-list"></i>
                         </div>
@@ -573,10 +584,15 @@ const logout = () => {
                     "
                     class="menu-item"
                     :class="[
-                        route_current == 'tipo_documentos.index' ? 'active' : 'none',
+                        route_current == 'tipo_documentos.index'
+                            ? 'active'
+                            : 'none',
                     ]"
                 >
-                    <Link :href="route('tipo_documentos.index')" class="menu-link">
+                    <Link
+                        :href="route('tipo_documentos.index')"
+                        class="menu-link"
+                    >
                         <div class="menu-icon">
                             <i class="fa fa-list"></i>
                         </div>
@@ -636,7 +652,9 @@ const logout = () => {
                     "
                     class="menu-item"
                     :class="[
-                        route_current == 'reportes.clientes' ? 'active' : 'none',
+                        route_current == 'reportes.clientes'
+                            ? 'active'
+                            : 'none',
                     ]"
                 >
                     <Link :href="route('reportes.clientes')" class="menu-link">
@@ -649,14 +667,21 @@ const logout = () => {
                 <div
                     v-if="
                         user_logeado.permisos == '*' ||
-                        user_logeado.permisos.includes('reportes.clientes')
+                        user_logeado.permisos.includes(
+                            'reportes.reporte_financieros'
+                        )
                     "
                     class="menu-item"
                     :class="[
-                        route_current == 'reportes.clientes' ? 'active' : 'none',
+                        route_current == 'reportes.reporte_financieros'
+                            ? 'active'
+                            : 'none',
                     ]"
                 >
-                    <Link :href="route('reportes.clientes')" class="menu-link">
+                    <Link
+                        :href="route('reportes.reporte_financieros')"
+                        class="menu-link"
+                    >
                         <div class="menu-icon">
                             <i class="fa fa-file-alt"></i>
                         </div>
@@ -670,7 +695,9 @@ const logout = () => {
                     "
                     class="menu-item"
                     :class="[
-                        route_current == 'reportes.clientes' ? 'active' : 'none',
+                        route_current == 'reportes.clientes'
+                            ? 'active'
+                            : 'none',
                     ]"
                 >
                     <Link :href="route('reportes.clientes')" class="menu-link">
