@@ -155,7 +155,7 @@
         <h2 class="titulo">
             {{ $configuracion->first()->nombre_sistema }}
         </h2>
-        <h4 class="texto">LISTA DE USUARIOS</h4>
+        <h4 class="texto">LISTA DE CLIENTES</h4>
         <h4 class="fecha">Expedido: {{ date('d-m-Y') }}</h4>
     </div>
     <table border="1">
@@ -188,7 +188,7 @@
                 <th>C.I.</th>
                 <th>Nacionalidad</th>
                 <th>Ocupación</th>
-                <th>FECHA DE REGISTRO</th>
+                <th>Fecha de Registro</th>
             </tr>
         </thead>
         <tbody>

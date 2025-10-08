@@ -700,7 +700,10 @@ const logout = () => {
                             : 'none',
                     ]"
                 >
-                    <Link :href="route('reportes.clientes')" class="menu-link">
+                    <Link
+                        :href="route('reportes.greporte_financieros')"
+                        class="menu-link"
+                    >
                         <div class="menu-icon">
                             <i class="fa fa-chart-column"></i>
                         </div>

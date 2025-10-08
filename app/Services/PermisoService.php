@@ -62,6 +62,8 @@ class PermisoService
             "reportes.r_clientes",
             "reportes.reporte_financieros",
             "reportes.r_reporte_financieros",
+            "reportes.greporte_financieros",
+            "reportes.r_greporte_financieros"
         ],
         "EMPLEADO" => [],
     ];

@@ -34,6 +34,7 @@ onMounted(() => {
 });
 
 const form = ref({
+    tipoR: "pdf",
     tipo: "todos",
 });
 
@@ -44,6 +45,17 @@ const txtBtn = computed(() => {
     }
     return "Generar Reporte";
 });
+
+const tipoReporte = ref([
+    {
+        value: "pdf",
+        label: "PDF",
+    },
+    {
+        value: "excel",
+        label: "EXCEL",
+    },
+]);
 
 const listTipos = ref([
     { value: "todos", label: "TODOS" },
@@ -77,6 +89,20 @@ const generarReporte = () => {
                 <div class="card-body">
                     <form @submit.prevent="generarReporte">
                         <div class="row">
+                            <div class="col-12 mb-2">
+                                <label>Tipo de reporte</label>
+                                <select
+                                    v-model="form.tipoR"
+                                    class="form-control"
+                                >
+                                    <option
+                                        v-for="item in tipoReporte"
+                                        :value="item.value"
+                                    >
+                                        {{ item.label }}
+                                    </option>
+                                </select>
+                            </div>
                             <div class="col-md-12">
                                 <label>Seleccionar tipo de usuario*</label>
                                 <select

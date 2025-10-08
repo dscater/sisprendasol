@@ -113,5 +113,8 @@ Route::middleware(['auth', 'permisoUsuario'])->prefix("admin")->group(function (
 
     Route::get('reportes/reporte_financieros', [ReporteController::class, 'reporte_financieros'])->name("reportes.reporte_financieros");
     Route::get('reportes/r_reporte_financieros', [ReporteController::class, 'r_reporte_financieros'])->name("reportes.r_reporte_financieros");
+
+    Route::get('reportes/greporte_financieros', [ReporteController::class, 'greporte_financieros'])->name("reportes.greporte_financieros");
+    Route::get('reportes/r_greporte_financieros', [ReporteController::class, 'r_greporte_financieros'])->name("reportes.r_greporte_financieros");
 });
 require __DIR__ . '/auth.php';
