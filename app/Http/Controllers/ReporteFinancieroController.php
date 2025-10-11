@@ -68,12 +68,12 @@ class ReporteFinancieroController extends Controller
         $page = (int)(($start / $length) + 1); // Cálculo de la página actual
         $search = (string)$request->input('search', '');
 
-        $usuarios = $this->reporteFinancieroService->listadoDataTable($length, $start, $page, $search);
+        $reporte_financieros = $this->reporteFinancieroService->listadoDataTable($length, $start, $page, $search);
 
         return response()->JSON([
-            'data' => $usuarios->items(),
-            'recordsTotal' => $usuarios->total(),
-            'recordsFiltered' => $usuarios->total(),
+            'data' => $reporte_financieros->items(),
+            'recordsTotal' => $reporte_financieros->total(),
+            'recordsFiltered' => $reporte_financieros->total(),
             'draw' => intval($request->input('draw')),
         ]);
     }

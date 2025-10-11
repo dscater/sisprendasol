@@ -5,12 +5,16 @@ import { Head, usePage } from "@inertiajs/vue3";
 import Highcharts from "highcharts";
 import exporting from "highcharts/modules/exporting";
 import accessibility from "highcharts/modules/accessibility";
+import Highcharts3D from "highcharts/highcharts-3d";
+import cylinder from "highcharts/modules/cylinder";
 import { useFormater } from "@/composables/useFormater";
 const { getFormatoMoneda } = useFormater();
 const { auth } = usePage().props;
 const user = ref(auth.user);
 exporting(Highcharts);
 accessibility(Highcharts);
+Highcharts3D(Highcharts);
+cylinder(Highcharts);
 Highcharts.setOptions({
     lang: {
         downloadPNG: "Descargar PNG",
@@ -86,7 +90,14 @@ const renderChart = (containerId, categories, data) => {
     const calculatedHeight = Math.max(minHeight, categories.length * rowHeight);
     Highcharts.chart(containerId, {
         chart: {
-            type: "column",
+            type: "cylinder",
+            options3d: {
+                enabled: true,
+                alpha: 20,
+                beta: 4,
+                depth: 40,
+                viewDistance: 0,
+            },
             height: calculatedHeight,
         },
         title: {
@@ -115,6 +126,7 @@ const renderChart = (containerId, categories, data) => {
         },
         plotOptions: {
             series: {
+                depth: 100,
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,

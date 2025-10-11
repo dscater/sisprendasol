@@ -820,7 +820,7 @@ onMounted(() => {});
                                             form.estado_civil != 'SOLTERO' &&
                                             form.estado_civil != '',
                                     }"
-                                    >Documenti de Identidad</label
+                                    >Documento de Identidad</label
                                 >
                                 <el-input
                                     type="text"

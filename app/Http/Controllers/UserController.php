@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\Cliente;
 use App\Models\Material;
 use App\Models\Producto;
 use App\Models\Publicacion;
+use App\Models\ReporteFinanciero;
 use App\Models\Tarea;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -46,37 +48,26 @@ class UserController extends Controller
                 ];
             }
 
-            // if ($permisos == '*' || (is_array($permisos) && in_array('areas.index', $permisos))) {
-            //     $areas = Area::select("areas.id");
-            //     $areas = $areas->count();
-            //     $array_infos[] = [
-            //         'label' => 'ÁREAS DE PRODUCCIÓN',
-            //         'cantidad' => $areas,
-            //         'color' => 'bg-principal',
-            //         'icon' => "fa-list",
-            //         "url" => "areas.index"
-            //     ];
-            // }
 
-            if ($permisos == '*' || (is_array($permisos) && in_array('usuarios.index', $permisos))) {
-                $areas = 0;
+            if ($permisos == '*' || (is_array($permisos) && in_array('clientes.index', $permisos))) {
+                $total = Cliente::count();
                 $array_infos[] = [
                     'label' => 'CLIENTES',
-                    'cantidad' => $areas,
+                    'cantidad' => $total,
                     'color' => 'bg-principal',
                     'icon' => "fa-list",
-                    "url" => "usuarios.index"
+                    "url" => "clientes.index"
                 ];
             }
 
-            if ($permisos == '*' || (is_array($permisos) && in_array('usuarios.index', $permisos))) {
-                $areas = 0;
+            if ($permisos == '*' || (is_array($permisos) && in_array('reporte_financieros.index', $permisos))) {
+                $total = ReporteFinanciero::count();
                 $array_infos[] = [
                     'label' => 'REPORTES FINANCIEROS',
-                    'cantidad' => $areas,
+                    'cantidad' => $total,
                     'color' => 'bg-principal',
                     'icon' => "fa-list",
-                    "url" => "usuarios.index"
+                    "url" => "reporte_financieros.index"
                 ];
             }
         }

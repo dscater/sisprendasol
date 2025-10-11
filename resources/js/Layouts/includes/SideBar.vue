@@ -691,11 +691,13 @@ const logout = () => {
                 <div
                     v-if="
                         user_logeado.permisos == '*' ||
-                        user_logeado.permisos.includes('reportes.clientes')
+                        user_logeado.permisos.includes(
+                            'reportes.greporte_financieros'
+                        )
                     "
                     class="menu-item"
                     :class="[
-                        route_current == 'reportes.clientes'
+                        route_current == 'reportes.greporte_financieros'
                             ? 'active'
                             : 'none',
                     ]"

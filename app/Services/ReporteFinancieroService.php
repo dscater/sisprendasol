@@ -4,12 +4,14 @@ namespace App\Services;
 
 use App\Models\ReporteFinanciero;
 use App\Services\HistorialAccionService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 class ReporteFinancieroService
 {
@@ -28,8 +30,38 @@ class ReporteFinancieroService
     {
         $reporte_financieros = ReporteFinanciero::with(["tipo_documento", "cliente"])
             ->select("reporte_financieros.*");
-        if ($search && trim($search) != '') {
-            $reporte_financieros->where("nombre", "LIKE", "%$search%");
+        if (!empty($search)) {
+            // Detectar si el texto parece una fecha (ej: 12/10/2025 o 12-10-2025)
+            $fecha = null;
+            if (preg_match('/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/', trim($search), $matches)) {
+                try {
+                    $fecha = Carbon::createFromFormat('d/m/Y', str_replace('-', '/', $search))->format('Y-m-d');
+                } catch (\Exception $e) {
+                    // Si falla el formato anterior, intentar con d-m-Y
+                    try {
+                        $fecha = Carbon::createFromFormat('d-m-Y', $search)->format('Y-m-d');
+                    } catch (\Exception $e2) {
+                        $fecha = null;
+                    }
+                }
+            }
+
+            $reporte_financieros->where(function ($query) use ($search, $fecha) {
+                // Buscar por nombre completo del cliente
+                $query->orWhereHas('cliente', function ($q) use ($search) {
+                    $q->where(DB::raw("CONCAT_WS(' ', nombre, paterno, materno)"), 'LIKE', "%{$search}%");
+                });
+
+                // Buscar por tipo de documento
+                $query->orWhereHas('tipo_documento', function ($q) use ($search) {
+                    $q->where('nombre', 'LIKE', "%{$search}%");
+                });
+
+                // Buscar por fecha si es válida
+                if ($fecha) {
+                    $query->orWhereDate('reporte_financieros.fecha_registro', $fecha);
+                }
+            });
         }
         $reporte_financieros = $reporte_financieros->paginate($length, ['*'], 'page', $page);
         return $reporte_financieros;

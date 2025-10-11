@@ -440,6 +440,7 @@ class ReporteController extends Controller
 
     public function r_reporte_financieros(Request $request)
     {
+        $tipoR = $request->tipoR;
         $tipo =  $request->tipo;
         $fecha_ini =  $request->fecha_ini;
         $fecha_fin =  $request->fecha_fin;
@@ -455,17 +456,102 @@ class ReporteController extends Controller
 
         $reporte_financieros = $reporte_financieros->get();
 
-        $pdf = PDF::loadView('reportes.reporte_financieros', compact('reporte_financieros'))->setPaper('letter', 'portrait');
+        if ($tipoR == 'pdf') {
+            $pdf = PDF::loadView('reportes.reporte_financieros', compact('reporte_financieros'))->setPaper('letter', 'portrait');
 
-        // ENUMERAR LAS PÁGINAS USANDO CANVAS
-        $pdf->output();
-        $dom_pdf = $pdf->getDomPDF();
-        $canvas = $dom_pdf->get_canvas();
-        $alto = $canvas->get_height();
-        $ancho = $canvas->get_width();
-        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
+            // ENUMERAR LAS PÁGINAS USANDO CANVAS
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+            $canvas = $dom_pdf->get_canvas();
+            $alto = $canvas->get_height();
+            $ancho = $canvas->get_width();
+            $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
 
-        return $pdf->stream('reporte_financieros.pdf');
+            return $pdf->stream('reporte_financieros.pdf');
+        } else {
+            $spreadsheet = new Spreadsheet();
+            $spreadsheet->getProperties()
+                ->setCreator("ADMIN")
+                ->setLastModifiedBy('Administración')
+                ->setTitle('Registros')
+                ->setSubject('Registros')
+                ->setDescription('Registros')
+                ->setKeywords('PHPSpreadsheet')
+                ->setCategory('Listado');
+
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
+
+            $fila = 1;
+            if (file_exists(public_path() . '/imgs/' . $this->configuracion->logo)) {
+                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                $drawing->setName('logo');
+                $drawing->setDescription('logo');
+                $drawing->setPath(public_path() . '/imgs/' . $this->configuracion->logo); // put your path and image here
+                $drawing->setCoordinates('A' . $fila);
+                $drawing->setOffsetX(5);
+                $drawing->setOffsetY(0);
+                $drawing->setHeight(60);
+                $drawing->setWorksheet($sheet);
+            }
+
+            $fila = 2;
+            $sheet->setCellValue('A' . $fila, $this->configuracion->nombre_sistema);
+            $sheet->mergeCells("A" . $fila . ":E" . $fila);  //COMBINAR CELDAS
+            $sheet->getStyle('A' . $fila . ':E' . $fila)->getAlignment()->setHorizontal('center');
+            $sheet->getStyle('A' . $fila . ':E' . $fila)->applyFromArray($this->titulo);
+            $fila++;
+            $sheet->setCellValue('A' . $fila, "REPORTE FINANCIERO");
+            $sheet->mergeCells("A" . $fila . ":E" . $fila);  //COMBINAR CELDAS
+            $sheet->getStyle('A' . $fila . ':E' . $fila)->getAlignment()->setHorizontal('center');
+            $sheet->getStyle('A' . $fila . ':E' . $fila)->applyFromArray($this->titulo);
+            $fila++;
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'N°');
+            $sheet->setCellValue('B' . $fila, 'CLIENTE');
+            $sheet->setCellValue('C' . $fila, 'TIPO DE DOCUMENTO');
+            $sheet->setCellValue('D' . $fila, 'TIPO DE RIESGO');
+            $sheet->setCellValue('E' . $fila, 'FECHA DE REGISTRO');
+            $sheet->getStyle('A' . $fila . ':E' . $fila)->applyFromArray($this->headerTabla);
+            $fila++;
+
+            foreach ($reporte_financieros as $key => $reporte_financiero) {
+                $sheet->setCellValue('A' . $fila, $key + 1);
+                $sheet->setCellValue('B' . $fila, $reporte_financiero->cliente->full_name);
+                $sheet->setCellValue('C' . $fila, $reporte_financiero->tipo_documento->nombre);
+                $sheet->setCellValue('D' . $fila, $reporte_financiero->tipo);
+                $sheet->setCellValue('E' . $fila, $reporte_financiero->fecha_registro_t);
+                $sheet->getStyle('A' . $fila . ':E' . $fila)->applyFromArray($this->bodyTabla);
+                $fila++;
+            }
+
+            $sheet->getColumnDimension('A')->setWidth(6);
+            $sheet->getColumnDimension('B')->setWidth(30);
+            $sheet->getColumnDimension('C')->setWidth(22);
+            $sheet->getColumnDimension('D')->setWidth(15);
+            $sheet->getColumnDimension('E')->setWidth(20);
+
+            foreach (range('A', 'E') as $columnID) {
+                $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
+            }
+
+            $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT);
+            $sheet->getPageMargins()->setTop(0.5);
+            $sheet->getPageMargins()->setRight(0.1);
+            $sheet->getPageMargins()->setLeft(0.1);
+            $sheet->getPageMargins()->setBottom(0.1);
+            $sheet->getPageSetup()->setPrintArea('A:E');
+            $sheet->getPageSetup()->setFitToWidth(1);
+            $sheet->getPageSetup()->setFitToHeight(0);
+
+            // DESCARGA DEL ARCHIVO
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="reporte_financiero' . time() . '.xlsx"');
+            header('Cache-Control: max-age=0');
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+        }
     }
 
     public function greporte_financieros()
