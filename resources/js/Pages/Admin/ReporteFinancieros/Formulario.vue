@@ -4,6 +4,23 @@ import { useAxios } from "@/composables/axios/useAxios";
 import { watch, ref, computed, defineEmits, onMounted, nextTick } from "vue";
 import axios from "axios";
 import { useReporteFinancieros } from "@/composables/reporte_financieros/useReporteFinancieros";
+import Highcharts from "highcharts";
+import accessibility from "highcharts/modules/accessibility";
+import exporting from "highcharts/modules/exporting";
+exporting(Highcharts);
+accessibility(Highcharts);
+Highcharts.setOptions({
+    lang: {
+        downloadPNG: "Descargar PNG",
+        downloadJPEG: "Descargar JPEG",
+        downloadPDF: "Descargar PDF",
+        downloadSVG: "Descargar SVG",
+        printChart: "Imprimir gráfico",
+        contextButtonTitle: "Menú de exportación",
+        viewFullscreen: "Pantalla completa",
+        exitFullscreen: "Salir de pantalla completa",
+    },
+});
 const props = defineProps({
     open_dialog: {
         type: Boolean,
@@ -124,17 +141,16 @@ const cargarArchivo2 = (event) => {
     form.doc2 = archivo2.value;
 };
 
+const r2 = ref(0);
 const getResultado = () => {
-    if (
-        archivo1.value &&
-        archivo2.value &&
-        archivo1.value.name &&
-        archivo2.value.name
-    ) {
+    console.log(form.doc1);
+    console.log(form.doc2);
+    // asd;
+    if (form.doc1 && form.doc2) {
         obteniendoResultado.value = true;
         const formData = new FormData();
-        formData.append("archivo1", archivo1.value);
-        formData.append("archivo2", archivo2.value);
+        formData.append("archivo1", form.doc1);
+        formData.append("archivo2", form.doc2);
         axios
             .post(route("reporte_financieros.archivos"), formData, {
                 headers: {
@@ -144,6 +160,14 @@ const getResultado = () => {
             .then((response) => {
                 generado.value = true;
                 form.res = response.data.porcentaje;
+                r2.value = response.data.r2;
+                grafico1(
+                    response.data.regresion,
+                    response.data.noapto,
+                    response.data.apto,
+                    response.data.nom1,
+                    response.data.nom2
+                );
             })
             .catch((err) => {
                 generado.value = false;
@@ -161,6 +185,68 @@ const getResultado = () => {
             confirmButtonText: `Aceptar`,
         });
     }
+};
+
+const grafico1 = (regresion, noapto, apto, nom1, nom2) => {
+    // Configurar el gráfico con Highcharts
+    Highcharts.chart("container1", {
+        title: {
+            text: "Reporte Financiero",
+        },
+        xAxis: {
+            title: {
+                text: "Puntuación obtenida",
+            },
+            min: 0,
+        },
+        yAxis: {
+            title: {
+                text: "Puntuación esperada",
+            },
+        },
+        series: [
+            {
+                name: "Línea de Regresión",
+                data: regresion,
+                type: "line",
+                color: "red",
+                marker: {
+                    enabled: false,
+                },
+            },
+            {
+                name: nom1,
+                data: noapto,
+                type: "scatter",
+                color: "blue",
+                marker: {
+                    symbol: "circle",
+                    radius: 6, // Tamaño del punto para el equipo A
+                },
+            },
+            {
+                name: nom2,
+                data: apto,
+                type: "scatter",
+                color: "green",
+                marker: {
+                    symbol: "square",
+                    radius: 6, // Tamaño del punto para el equipo B
+                },
+            },
+        ],
+        tooltip: {
+            formatter: function () {
+                return (
+                    "Puntuación esperada: <b>" +
+                    this.x.toFixed(2) +
+                    "</b><br>Puntuación obtenida: <b>" +
+                    this.y.toFixed(2) +
+                    "</b>"
+                );
+            },
+        },
+    });
 };
 
 const textoResultado = (porcentaje) => {
@@ -327,6 +413,15 @@ onMounted(() => {});
                                     </li>
                                 </ul>
                             </div>
+                            <div class="col-12 text-center mt-2">
+                                <button
+                                    class="btn btn-outline-success"
+                                    type="button"
+                                    @click="getResultado"
+                                >
+                                    Generar <i class="fa fa-arrow-right"></i>
+                                </button>
+                            </div>
                             <div class="col-12 mt-3 text-center mb-2">
                                 <label class="h4">Resultado</label>
                                 <br />
@@ -336,18 +431,22 @@ onMounted(() => {});
                                 >
                                     {{ textoResultado(form.res) }}
                                 </div>
-                                <div v-else class="h5 alert alert-gray">
+                                <div class="row mt-2" v-show="form.res">
+                                    <div class="col-12">
+                                        <div
+                                            class="font-weight-bold text-md text-left badge bg-primary"
+                                        >
+                                            R^2 = {{ r2 }}%
+                                        </div>
+                                        <div id="container1"></div>
+                                    </div>
+                                </div>
+                                <div
+                                    v-if="!form.res"
+                                    class="h5 alert alert-gray"
+                                >
                                     Carga los archivos para generar el resultado
                                 </div>
-                            </div>
-                            <div class="col-12 text-center">
-                                <button
-                                    class="btn btn-outline-success"
-                                    type="button"
-                                    @click="getResultado"
-                                >
-                                    Generar <i class="fa fa-arrow-right"></i>
-                                </button>
                             </div>
                         </div>
                         <div

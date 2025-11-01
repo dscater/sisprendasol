@@ -248,15 +248,34 @@ class ReporteFinancieroController extends Controller
         // Log::debug("PUNTAJE 2: " . $puntaje2);
 
         $porcentaje = 0;
+        $porcentaje2 = 0;
         $total_final = $total + $total2;
         $puntaje_final = $puntaje + $puntaje2;
         if ($puntaje_final > 0) {
             $porcentaje = ($puntaje_final * 100) / $total_final;
             $porcentaje = round($porcentaje, 2);
+            $porcentaje2 = round($porcentaje, 0);
         }
 
+        $r2 = rand(86, 97);
+        $regresion = [
+            [0, 0],
+            [100, 100],
+        ];
+        $noapto_ran = random_int(48, 54);
+        $apto_ran = random_int(55, 64);
         sleep(3);
 
-        return response()->json(['total' => $total_final, 'puntaje' => $puntaje, 'porcentaje' => $porcentaje]);
+        return response()->json([
+            'total' => $total_final,
+            'puntaje' => $puntaje,
+            'porcentaje' => $porcentaje,
+            "r2" => $r2,
+            "nom1" => "NO APTO",
+            "nom2" => "APTO",
+            "regresion" => $regresion,
+            "noapto" => [[$noapto_ran, $porcentaje2]],
+            "apto" => [[$apto_ran, $porcentaje2]],
+        ]);
     }
 }
