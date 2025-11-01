@@ -47,6 +47,9 @@ watch(
     async (newValue) => {
         dialog.value = newValue;
         if (dialog.value) {
+            archivo1.value.value = null;
+            archivo2.value.value = null;
+            generado.value = false;
             document
                 .getElementsByTagName("body")[0]
                 .classList.add("modal-open");
@@ -133,12 +136,10 @@ const archivo1 = ref(null);
 const archivo2 = ref(null);
 
 const cargarArchivo1 = (event) => {
-    archivo1.value = event.target.files[0];
-    form.doc1 = archivo1.value;
+    form.doc1 = event.target.files[0];
 };
 const cargarArchivo2 = (event) => {
-    archivo2.value = event.target.files[0];
-    form.doc2 = archivo2.value;
+    form.doc2 = event.target.files[0];
 };
 
 const r2 = ref(0);
@@ -431,7 +432,10 @@ onMounted(() => {});
                                 >
                                     {{ textoResultado(form.res) }}
                                 </div>
-                                <div class="row mt-2" v-show="form.res">
+                                <div
+                                    class="row mt-2"
+                                    v-show="form.res && generado"
+                                >
                                     <div class="col-12">
                                         <div
                                             class="font-weight-bold text-md text-left badge bg-primary"
