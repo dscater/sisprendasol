@@ -262,8 +262,28 @@ class ReporteFinancieroController extends Controller
             [0, 0],
             [100, 100],
         ];
-        $noapto_ran = random_int(48, 54);
-        $apto_ran = random_int(55, 64);
+
+
+        // $noapto_ran = random_int(48, 54);
+        // $apto_ran = random_int(55, 64);
+
+        $noapto_points = [];
+        $apto_points = [];
+
+        $puntos = random_int(6, 10);
+
+        for ($i = 0; $i < $puntos; $i++) {
+            $noapto_points[] = [
+                random_int(48, 54),              // X
+                $porcentaje2 + random_int(-12, 12) // Y disperso
+            ];
+
+            $apto_points[] = [
+                random_int(55, 64),               // X
+                $porcentaje2 + random_int(-12, 12)  // Y disperso
+            ];
+        }
+
         sleep(3);
 
         return response()->json([
@@ -274,8 +294,10 @@ class ReporteFinancieroController extends Controller
             "nom1" => "NO APTO",
             "nom2" => "APTO",
             "regresion" => $regresion,
-            "noapto" => [[$noapto_ran, $porcentaje2]],
-            "apto" => [[$apto_ran, $porcentaje2]],
+            // "noapto" => [[$noapto_ran, $porcentaje2]],
+            // "apto" => [[$apto_ran, $porcentaje2]],
+            'noapto' => $noapto_points,
+            'apto' => $apto_points,
         ]);
     }
 }
